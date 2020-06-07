@@ -13,3 +13,7 @@ gem 'rubocop', '~> 0.85.0', groups: %i[developmen test]
 gem 'rubocop-rspec', '~> 1.39', groups: %i[development test]
 
 gem 'dotenv', '~> 2.7', groups: %i[development test]
+
+gem 'ruby-debug-ide', '~> 0.7.2', group: :development
+
+gem 'debase', '~> 0.2.4', group: :development

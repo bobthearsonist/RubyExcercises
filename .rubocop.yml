@@ -1,8 +1,11 @@
 AllCops:
   NewCops: enable
 
+Bundler/OrderedGems:
+  AutoCorrect: true
+
 Style/FrozenStringLiteralComment:
-    Enabled: false
+  Enabled: false
 
 Style/RegexpLiteral:
   Exclude:
@@ -14,3 +17,6 @@ Metrics/BlockLength:
     - 'test/**/*.rb'
     - "spec/**/*"
     - "link_community.gemspec"
+
+Metrics/MethodLength:
+  Max: 100

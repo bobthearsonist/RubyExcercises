@@ -5,15 +5,14 @@ class Permutations2
   end
 
   def self.shifting(nums)
-    take = nums
-    working = nums
-    solution = {}
-    solution[0] = working
-    nums.length.times do |index|
+    take = nums.dup
+    working = nums.dup
+    solution = Set.new
+    nums.length.times do |_index|
+      solution << working.dup
       working.pop
-      working.push(take.pop)
-      solution[index] = working
+      working.unshift(take.pop)
     end
-    solution.values
+    solution.to_a
   end
 end

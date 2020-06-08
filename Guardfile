@@ -24,6 +24,30 @@
 #  * zeus: 'zeus rspec' (requires the server to be started separately)
 #  * 'just' rspec: 'rspec'
 
+rubocop_cli_args = []
+
+require 'dotenv'
+Dotenv.load
+
+ENV.fetch('AUTOCORRECT')
+rubocop_cli_args << '--display-cop-names'
+if ENV['AUTOCORRECT']
+  puts '*' * 80, 'Rubocop auto-correct mode enabled', '*' * 80
+  rubocop_cli_args << '--auto-correct'
+else
+  puts '*' * 80
+  puts "You can set Rubocop to auto-correct fixable offenses by setting ENV['AUTOCORRECT']"
+  puts 'e.g. `$ AUTOCORRECT=yesplease guard`'
+  puts '*' * 80
+end
+
+# TODO: use launchy to show test report? https://github.com/yujinakayama/guard-rubocop#using-launchy-to-view-results
+guard :rubocop, run_on_start: true, cli: rubocop_cli_args.join(' ') do
+  watch(/.+\.rb$/)
+  watch('rubocop.yml')
+  watch(%r{(?:.+/)?\.rubocop(?:_todo)?\.yml$}) { |m| File.dirname(m[0]) }
+end
+
 guard :rspec, cmd: 'bundle exec rspec' do
   require 'guard/rspec/dsl'
   dsl = Guard::RSpec::Dsl.new(self)
@@ -67,28 +91,4 @@ guard :rspec, cmd: 'bundle exec rspec' do
   watch(%r{^spec/acceptance/steps/(.+)_steps\.rb$}) do |m|
     Dir[File.join("**/#{m[1]}.feature")][0] || 'spec/acceptance'
   end
-end
-
-rubocop_cli_args = []
-
-require 'dotenv'
-Dotenv.load
-
-ENV.fetch('AUTOCORRECT')
-rubocop_cli_args << '--display-cop-names'
-if ENV['AUTOCORRECT']
-  puts '*' * 80, 'Rubocop auto-correct mode enabled', '*' * 80
-  rubocop_cli_args << '--auto-correct'
-else
-  puts '*' * 80
-  puts "You can set Rubocop to auto-correct fixable offenses by setting ENV['AUTOCORRECT']"
-  puts 'e.g. `$ AUTOCORRECT=yesplease guard`'
-  puts '*' * 80
-end
-
-# TODO: use launchy to show test report? https://github.com/yujinakayama/guard-rubocop#using-launchy-to-view-results
-guard :rubocop, run_on_start: true, cli: rubocop_cli_args.join(' ') do
-  watch(/.+\.rb$/)
-  watch('rubocop.yml')
-  watch(%r{(?:.+/)?\.rubocop(?:_todo)?\.yml$}) { |m| File.dirname(m[0]) }
 end

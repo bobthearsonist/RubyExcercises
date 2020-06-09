@@ -4,7 +4,7 @@
 # Knights tour returns a solved bourd as a 2d array with a move number in each space
 # https://en.wikipedia.org/wiki/Knight%27s_tour
 class KnightsTour
-  def initialize(board_size,start_position = Position.new)
+  def initialize(board_size, start_position = Position.new)
     @board = Board.new(board_size)
     @piece = Knight.new(start_position)
   end
@@ -15,10 +15,11 @@ class KnightsTour
 
   # use backtracking algorithm to solve
 
-  def backtracking_tour(start_position = @piece.position)
+  def backtracking_tour(_start_position = @piece.position)
     @board.update(@piece)
-    return @board if backtrack(@board,@piece)
-    "solution does not exist" 
+    return @board if backtrack(@board, @piece)
+
+    'solution does not exist'
   end
 
   # recursive helper
@@ -28,11 +29,10 @@ class KnightsTour
     return true if board.solved
 
     # try all of the moves
-    piece.class.moves.each_index do |possible_move|
-       
-      if (piece.move(possible_move, board)) 
+    piece.moves.each_index do |possible_move|
+      if piece.move(possible_move, board)
         board.update(piece)
-        return backtrack(board, piece) 
+        return backtrack(board, piece)
       else
         board.move_back(piece)
       end
@@ -45,7 +45,7 @@ end
 class Knight
   @@moves = [[1, 2], [2, 1], [2, -1], [1, -2], [-1, -2], [-2, -1], [-2, 1], [-1, 2]]
 
-  def self.moves
+  def moves
     @@moves
   end
 
@@ -61,10 +61,10 @@ class Knight
     new_position = @position.dup
     new_position.move(@@moves[move_selector])
     return false unless board.valid_move(new_position)
-    
+
     @position = new_position.dup
     @move_counter += 1
-    return true
+    true
   end
 end
 
@@ -77,16 +77,16 @@ class Board
 
   def move_back(position)
     @board.delete(position)
-    p "move back" + self.to_s
+    p 'move back' + to_s
   end
 
   def update(piece)
     @board[piece.position] ||= piece.move_counter
-    p "move " + self.to_s
+    p 'move ' + to_s
   end
 
   def solved
-    @board.count.equal?(@size*@size)
+    @board.count.equal?(@size * @size)
   end
 
   def valid_move(new_position)
@@ -98,7 +98,7 @@ class Board
   end
 
   def to_s
-    @board.map{|move| "\[#{move[0].x}\,#{move[0].y}\] #{move[1]}"}.join(', ')
+    @board.map { |move| "\[#{move[0].x}\,#{move[0].y}\] #{move[1]}" }.join(', ')
   end
 end
 

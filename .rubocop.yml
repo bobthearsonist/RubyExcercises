@@ -9,6 +9,9 @@ Bundler/OrderedGems:
 Style/FrozenStringLiteralComment:
   Enabled: false
 
+Style/ClassVars:
+  Enabled: false
+
 Style/RegexpLiteral:
   Exclude:
     - Guardfile

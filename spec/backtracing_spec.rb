@@ -18,7 +18,9 @@ describe KnightsTour do
     print @board.to_s
   end
   it 'solves the simplest solvable board' do
-    expect(KnightsTour.new(1).backtracking_tour.solved).to be_truthy
+    board = KnightsTour.new(1).backtracking_tour
+    expect(board.solved).to be_truthy
+    expect(board.moves.values.map{|move| [move[:x], move[:y]]}).to contain_exactly([0,0])
   end
   it 'cannot solve unsolvable boards', :aggregate_failures do
     expect(KnightsTour.new(2).backtracking_tour.solved).to be_falsy

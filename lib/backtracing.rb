@@ -16,18 +16,14 @@ class KnightsTour
 
   # use backtracking algorithm to solve. returns an empty board so that solved is false
   def backtracking_tour(_start_position = @piece.position)
-    @board.update(@piece)
-    recurse(@board, @piece)
-    print @board.to_s
+    recurse(@board.update(@piece), @piece)
     @board
   end
 
-  # recursive helper
   private
 
+  # recursive helper
   def recurse(board, piece)
-    return true if board.solved
-
     # try all of the moves
     piece.moves.each_index do |possible_move|
       if piece.move(possible_move, board)
@@ -35,8 +31,8 @@ class KnightsTour
         return recurse(board, piece)
       end
       board.move_back(piece)
-    end
-    false
+    end unless board.solved
+    board
   end
 end
 
@@ -65,12 +61,17 @@ class Knight
     @move_counter += 1
     true
   end
+
+  def to_h
+    {x:position.x,y:position.y,move:move_counter}
+  end
 end
 
 # chess board with 0 indexed coordinate planes
 class Board
-  attr_accessor :board
-
+  def moves
+    @board
+  end
   def initialize(size = 1) # preserve solved == false for board.new
     @size = size
     @board = {}
@@ -79,11 +80,13 @@ class Board
   def move_back(piece)
     @board.delete(piece.position)
     logger.debug('move back' + to_s)
+    self
   end
 
   def update(piece)
-    @board[piece.position] ||= piece.move_counter
+    @board[piece.position] ||= piece.to_h
     logger.debug('move ' + to_s)
+    self
   end
 
   def solved

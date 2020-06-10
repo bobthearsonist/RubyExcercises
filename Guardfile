@@ -48,7 +48,7 @@ guard :rubocop, run_on_start: true, cli: rubocop_cli_args.join(' ') do
   watch(%r{(?:.+/)?\.rubocop(?:_todo)?\.yml$}) { |m| File.dirname(m[0]) }
 end
 
-guard :rspec, cmd: 'bundle exec rspec' do
+guard :rspec, cmd: 'bundle exec rspec -fd' do
   require 'guard/rspec/dsl'
   dsl = Guard::RSpec::Dsl.new(self)
 

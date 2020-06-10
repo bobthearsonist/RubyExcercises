@@ -9,3 +9,19 @@ def is_palindrome(x)
     return true if index >= digits.length / 2
   end
 end
+
+def is_palindrome_array(x)
+  return false if x < 0
+
+  digits = x.to_s.chars
+  half = digits.length / 2
+  i = 0
+  j = digits.length - 1
+  until i >= half
+    return false if digits[i] != digits[j]
+
+    i += 1
+    j -= 1
+  end
+  true
+end

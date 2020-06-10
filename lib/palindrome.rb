@@ -10,6 +10,12 @@ def is_palindrome(x)
   end
 end
 
+def is_palindrome_almost_cheating(x)
+  return false if x < 0
+
+  x.to_s == x.to_s.reverse ? true : false
+end
+
 def is_palindrome_array(x)
   return false if x < 0
 
@@ -24,4 +30,17 @@ def is_palindrome_array(x)
     j -= 1
   end
   true
+end
+
+# dont really like this one, its the offered solution...
+def is_palindrome_modulo(x)
+  return false if x < 0 || (x % 10 == 0 && x != 0)
+
+  reverse = 0;
+  while x > reverse
+    reverse = reverse*10 + x%10
+    x/=10
+  end
+
+  return x == reverse || x == reverse/10
 end

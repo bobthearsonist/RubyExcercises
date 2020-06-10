@@ -1,3 +1,4 @@
+require 'logging'
 # all backtracing problems can only be solved by trying every possible configuration
 # each configuration is tried only once
 
@@ -13,29 +14,27 @@ class KnightsTour
 
   def naive_tour(board); end
 
-  # use backtracking algorithm to solve
-
+  # use backtracking algorithm to solve. returns an empty board so that solved is false
   def backtracking_tour(_start_position = @piece.position)
     @board.update(@piece)
-    return @board if backtrack(@board, @piece)
-
-    'solution does not exist'
+    recurse(@board, @piece)
+    print @board.to_s
+    @board
   end
 
   # recursive helper
   private
 
-  def backtrack(board, piece)
+  def recurse(board, piece)
     return true if board.solved
 
     # try all of the moves
     piece.moves.each_index do |possible_move|
       if piece.move(possible_move, board)
         board.update(piece)
-        return backtrack(board, piece)
-      else
-        board.move_back(piece)
+        return recurse(board, piece)
       end
+      board.move_back(piece)
     end
     false
   end
@@ -68,31 +67,34 @@ class Knight
   end
 end
 
-# Handles the board
+# chess board with 0 indexed coordinate planes
 class Board
-  def initialize(size)
+  attr_accessor :board
+
+  def initialize(size = 1) # preserve solved == false for board.new
     @size = size
     @board = {}
   end
 
-  def move_back(position)
-    @board.delete(position)
-    p 'move back' + to_s
+  def move_back(piece)
+    @board.delete(piece.position)
+    logger.debug('move back' + to_s)
   end
 
   def update(piece)
     @board[piece.position] ||= piece.move_counter
-    p 'move ' + to_s
+    logger.debug('move ' + to_s)
   end
 
   def solved
     @board.count.equal?(@size * @size)
   end
 
+  # check validity of a move R=>[0,size-1]
   def valid_move(new_position)
-    new_position.x <= @size &&
+    new_position.x < @size &&
       new_position.x >= 0 &&
-      new_position.y <= @size &&
+      new_position.y < @size &&
       new_position.y >= 0 &&
       @board[new_position].nil?
   end

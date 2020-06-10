@@ -24,9 +24,9 @@ class KnightsTour
 
   # recursive helper
   def recurse(board, piece)
-    # try all of the moves
-    piece.moves.each_index do |possible_move|
-      if piece.move(possible_move, board)
+    # get valid moves BUT DONT MOVE
+    valid_moves = piece.moves.each_index.map{ |possible_move| {valid:piece.dup.move(possible_move, board), move:possible_move }.select{|x|x[:valid]==true}
+    
         board.update(piece)
         return recurse(board, piece)
       end

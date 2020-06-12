@@ -4,6 +4,7 @@
 # @return {Integer}
 def str_str(haystack, needle)
     (0..haystack.length).each do |i| 
+        break if i+needle.length > haystack
         return i if haystack[i,needle.length].eql?(needle)
     end
     return -1

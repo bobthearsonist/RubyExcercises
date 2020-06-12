@@ -9,3 +9,8 @@ def str_str(haystack, needle)
     end
     return -1
 end
+
+# not fair lol
+def str_str_hash(haystack, needle)
+    haystack.index(needle) || -1
+end

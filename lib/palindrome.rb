@@ -13,7 +13,7 @@ end
 def is_palindrome_almost_cheating(x)
   return false if x < 0
 
-  x.to_s == x.to_s.reverse ? true : false
+  x.digits == x.digits.reverse ? true : false
 end
 
 def is_palindrome_array(x)

@@ -9,7 +9,16 @@ describe do
         expected = LinkedList.new(expected_list)
         actual = LinkedList.new(swap_pairs(linked_list))
         expect(actual).to be ==(expected)
-    end    
+    end
+
+    it "should swap pairs for an odd numbered list" do
+        linked_list = ListNode.new(1,ListNode.new(2,ListNode.new(3,ListNode.new(4,ListNode.new(5,nil)))))
+        expected_list = ListNode.new(2,ListNode.new(1,ListNode.new(4,ListNode.new(3,ListNode.new(5,nil)))))
+
+        expected = LinkedList.new(expected_list)
+        actual = LinkedList.new(swap_pairs(linked_list))
+        expect(actual).to be ==(expected)
+    end   
         
     it "returns nil if given nil list" do
         nil_list = nil

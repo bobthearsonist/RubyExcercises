@@ -55,19 +55,18 @@ def swap_pairs(head)
     return head if head.next.nil?
     n1 = head
     head = head.next
-    n2 = n1.next
     prev = n1
     loop do
         #swap
-        prev.next = n2 unless prev == head
-        n1.next = n2.next
-        n2.next = n1
+        prev.next = n1.next unless n1 == head
+        temp = n1.next
+        n1.next = n1.next.next
+        temp.next = n1
         #evaluate
         break if n1.next.nil? || n1.next.next.nil?
         #advance
         prev = n1
         n1=n1.next
-        n2=n1.next
     end
     head
 end

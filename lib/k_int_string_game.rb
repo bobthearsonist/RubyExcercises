@@ -9,20 +9,14 @@ def subStringsLessKDist(inputString, num)
   # note: no restriction on input string size...
 
   # all combinations of desired length
-  # comb = inputString.chars.combination(num)
   # TODO could be more eficient without having to filter at end
-  comb = (0..inputString.length).map { |i| inputString[i..i + num - 1] }.select { |x| x.length == num }.map(&:chars)	# find combinations with repeated chars
+  comb = (0..inputString.length).map { |i| inputString[i..i + num - 1] }.select { |x| x.length == num }.map(&:chars)
 
   # map to hash with string and character counts
-  counts = comb.map do |combination|
-    counts = {}
-    combination.each { |char| counts[char] = counts[char] ? counts[char] + 1 : 1 }
-    # map to words again using join
-    { combination: combination.join, counts: counts }
+  comb.filter_map do |combination|
+    counts = Hash.new(0)
+    combination.each { |char| counts[char] += 1 }
+    # map to words again using join, only add if 1 char is repeated twice
+    combination.join if counts.one? { |_k, v| v == 2 }
   end
-  # filter to only 1 repeated char
-  valid = counts.select { |count| count[:counts].one? { |_key, value| value == 2 } }
-  # return
-  valid.map { |x| x[:combination] }
-  # its not combinations its substrings... so order matters.
 end

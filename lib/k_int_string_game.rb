@@ -10,7 +10,7 @@ def subStringsLessKDist(inputString, num)
 
   # all combinations of desired length
   # TODO could be more eficient without having to filter at end
-  comb = (0..inputString.length).map { |i| inputString[i..i + num - 1] }.select { |x| x.length == num }.map(&:chars)
+  comb = (0..inputString.length - num).map { |i| inputString[i..i + num - 1] }.map(&:chars)
 
   # map to hash with string and character counts
   comb.filter_map do |combination|
